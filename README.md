@@ -140,12 +140,8 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 4. Set up your API key
-cp .env.example .env
-# Edit .env and add your Groq key:
-# GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxx
 
-# 5. Add PDFs (see section 9 for links)
+# 4. Add PDFs (see section 9 for links)
 mkdir data
 # Copy your 3GPP / ITU PDFs into data/
 ```

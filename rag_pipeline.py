@@ -1,10 +1,4 @@
-"""
-rag_pipeline.py
----------------
-Core RAG pipeline for the Telecom & 5G Technical Assistant.
-Handles: document loading, chunking, embedding, FAISS indexing,
-         retrieval, re-ranking, and answer generation via Groq.
-"""
+
 
 import os
 from pathlib import Path
@@ -40,7 +34,6 @@ TOP_K_RERANK     = 3   # kept after re-ranking
 # ──────────────────────────────────────────────
 
 def load_pdf_documents(data_dir: Path = DATA_DIR):
-    """Load all PDFs from data_dir, tagging each page with its source filename."""
     pdf_paths = sorted(data_dir.glob("*.pdf"))
     if not pdf_paths:
         raise FileNotFoundError(
@@ -59,7 +52,6 @@ def load_pdf_documents(data_dir: Path = DATA_DIR):
 
 
 def split_documents(documents):
-    """Split pages into overlapping chunks for finer-grained retrieval."""
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
         chunk_overlap=CHUNK_OVERLAP,
@@ -71,7 +63,6 @@ def split_documents(documents):
 
 
 def build_vectorstore(chunks, save: bool = True):
-    """Embed chunks and store in a FAISS index (persisted to disk)."""
     print("  ⚙  Computing embeddings — this may take a minute …")
     embeddings   = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     vectorstore  = FAISS.from_documents(chunks, embeddings)
@@ -83,7 +74,6 @@ def build_vectorstore(chunks, save: bool = True):
 
 
 def load_vectorstore():
-    """Load a previously saved FAISS index from disk."""
     embeddings  = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     vectorstore = FAISS.load_local(
         str(FAISS_INDEX_DIR),
@@ -95,7 +85,6 @@ def load_vectorstore():
 
 
 def get_vectorstore(force_rebuild: bool = False):
-    """Return a vectorstore: load from disk if available, else build from PDFs."""
     if not force_rebuild and FAISS_INDEX_DIR.exists():
         print("\n[Index] Existing FAISS index found — loading …")
         return load_vectorstore()
@@ -120,7 +109,6 @@ def get_reranker() -> CrossEncoder:
 
 
 def rerank(query: str, docs: list, top_k: int = TOP_K_RERANK) -> list:
-    """Score (query, passage) pairs with a CrossEncoder and keep the best."""
     reranker = get_reranker()
     pairs    = [(query, doc.page_content) for doc in docs]
     scores   = reranker.predict(pairs)

@@ -253,7 +253,7 @@ SUGGESTIONS = [
     # "What is the difference between NSA and SA deployment?",
 ]
 
-st.markdown("**💡 Try asking:**")
+# st.markdown("**💡 Try asking:**")
 cols = st.columns(3)
 for i, suggestion in enumerate(SUGGESTIONS):
     if cols[i % 3].button(suggestion, key=f"sug_{i}"):
