@@ -1,0 +1,27 @@
+# TelecomGPT .gitignore
+
+# Secrets
+.env
+
+# FAISS index (large binary files — rebuild on each machine)
+faiss_index/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+env/
+venv/
+
+# Data (specs may be large — add individually if needed)
+data/
+
+# Streamlit cache
+.streamlit/
+
+# OS
+.DS_Store
+Thumbs.db
