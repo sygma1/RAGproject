@@ -1,0 +1,46 @@
+Q: Explain NSA vs SA deployment and
+
+A: **NSA (Non-Standalone) vs SA (Standalone) Deployment**
+
+In the context of 5G networks, NSA and SA refer to two different deployment modes for the Next-Generation Radio Access Network (NG-RAN).
+
+### NSA Deployment
+
+* **Definition**: Non-Standalone deployment refers to a 5G network that relies on the existing 4G LTE network infrastructure for control plane functions, such as mobility management and session management.
+* **Characteristics**:
+	+ Uses 4G LTE network for control plane functions
+	+ 5G New Radio (NR) is used only for user plane functions, such as data transmission
+	+ Requires a dual-connectivity setup, where the UE is connected to both 4G LTE and 5G NR cells
+* **Advantages**:
+	+ Faster deployment, as it leverages existing 4G LTE infrastructure
+	+ Lower costs, as it reduces the need for new cell sites and infrastructure
+* **Disadvantages**:
+	+ Limited by the capabilities of the 4G LTE network
+	+ May not support all 5G features and functionalities
+
+### SA Deployment
+
+* **Definition**: Standalone deployment refers to a 5G network that operates independently, without relying on the existing 4G LTE network infrastructure for control plane functions.
+* **Characteristics**:
+	+ Uses 5G NR for both control plane and user plane functions
+	+ Does not require a dual-connectivity setup, as the UE is connected only to the 5G NR cell
+* **Advantages**:
+	+ Supports all 5G features and functionalities, such as ultra-reliable low-latency communication (URLLC) and massive machine-type communication (mMTC)
+	+ Offers better performance, as it is not limited by the capabilities of the 4G LTE network
+* **Disadvantages**:
+	+ Requires a new, dedicated infrastructure, which can be more expensive and time-consuming to deploy
+	+ May require more cell sites and infrastructure to achieve the same level of coverage as 4G LTE
+
+**Comparison of NSA and SA Deployment**
+
+|  | NSA Deployment | SA Deployment |
+| --- | --- | --- |
+| Control Plane | 4G LTE | 5G NR |
+| User Plane | 5G NR | 5G NR |
+| Dual-Connectivity | Required | Not Required |
+| Advantages | Faster deployment, lower costs | Better performance, supports all 5G features |
+| Disadvantages | Limited by 4G LTE capabilities | More expensive, requires new infrastructure |
+
+In summary, NSA deployment is a more incremental approach, which leverages the existing 4G LTE infrastructure to deploy 5G services, while SA deployment is a more revolutionary approach, which requires a new, dedicated infrastructure to support all 5G features and functionalities. The choice between NSA and SA deployment depends on the operator's strategy, network architecture, and business requirements.
+
+============================================================
