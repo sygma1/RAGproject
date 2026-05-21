@@ -1,7 +1,7 @@
 """
 build_index.py
 --------------
-Standalone script to (re)build the FAISS index from PDFs in data/.
+Standalone script to (re)build the ChromaDB index from PDFs in data/.
 Run this once after adding new documents so the next app launch is instant.
 
 Usage:
@@ -12,10 +12,10 @@ Usage:
 import argparse
 from pathlib import Path
 
-from rag_pipeline import get_vectorstore, DATA_DIR, FAISS_INDEX_DIR
+from rag_pipeline import get_vectorstore, DATA_DIR, CHROMA_INDEX_DIR
 
 def main():
-    parser = argparse.ArgumentParser(description="Build FAISS index for TelecomGPT")
+    parser = argparse.ArgumentParser(description="Build ChromaDB index for TelecomGPT")
     parser.add_argument("--force", action="store_true", help="Force full rebuild")
     args = parser.parse_args()
 
@@ -30,8 +30,8 @@ def main():
         return
 
     vs = get_vectorstore(force_rebuild=args.force)
-    n  = vs.index.ntotal
-    print(f"\n✅  Index ready  —  {n} vectors stored in '{FAISS_INDEX_DIR}/'")
+    n  = len(vs._collection.get()["documents"])
+    print(f"\n✅  Index ready  —  {n} vectors stored in '{CHROMA_INDEX_DIR}/'")
     print("\nYou can now run the app with:  streamlit run app.py")
 
 if __name__ == "__main__":

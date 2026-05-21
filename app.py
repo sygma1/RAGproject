@@ -162,7 +162,7 @@ with st.sidebar:
         if not pdf_list:
             st.error("Add PDF files to `data/` first.")
         else:
-            with st.spinner("Building FAISS index …"):
+            with st.spinner("Building ChromaDB index …"):
                 try:
                     vs = get_vectorstore(force_rebuild=force_rebuild)
                     st.session_state.vectorstore = vs
@@ -173,7 +173,7 @@ with st.sidebar:
                     st.session_state.index_ready = True
 
                     # crude stats
-                    n_docs = vs.index.ntotal
+                    n_docs = len(vs._collection.get()["documents"])
                     st.session_state.index_stats = {
                         "vectors": n_docs,
                         "pdfs":    len(pdf_list),
@@ -181,21 +181,6 @@ with st.sidebar:
                     st.success("Index ready!")
                 except Exception as e:
                     st.error(f"Error: {e}")
-
-    st.divider()
-
-    # Stats
-    if st.session_state.index_ready:
-        stats = st.session_state.index_stats
-        col1, col2 = st.columns(2)
-        col1.markdown(
-            f"<div class='metric-box'><b>{stats['pdfs']}</b><br/><small>PDFs</small></div>",
-            unsafe_allow_html=True,
-        )
-        col2.markdown(
-            f"<div class='metric-box'><b>{stats['vectors']}</b><br/><small>Vectors</small></div>",
-            unsafe_allow_html=True,
-        )
 
     st.divider()
 
@@ -207,7 +192,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown(
-        "<small>Stack: LangChain · FAISS · CrossEncoder · Groq LLaMA-3</small>",
+        "<small>Stack: LangChain · ChromaDB · CrossEncoder · Groq LLaMA-3</small>",
         unsafe_allow_html=True,
     )
 
