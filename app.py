@@ -191,6 +191,43 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
+    st.markdown("### 🤖 Agent")
+    agent_query = st.text_input("Agent command / question", key="agent_query_input")
+    if st.button("Run Agent", key="run_agent", disabled=not api_key):
+        # ensure index & llm are loaded
+        if not st.session_state.vectorstore:
+            with st.spinner("Loading index and LLM…"):
+                try:
+                    vs = get_vectorstore(force_rebuild=force_rebuild)
+                    st.session_state.vectorstore = vs
+                    st.session_state.retriever   = vs.as_retriever(search_kwargs={"k": TOP_K_RETRIEVE})
+                    st.session_state.llm         = build_llm(api_key)
+                    st.session_state.index_ready = True
+                except Exception as e:
+                    st.error(f"Error loading index: {e}")
+        # run agent query
+        if st.session_state.vectorstore:
+            q = (agent_query or "").strip()
+            if not q:
+                st.warning("Enter a question for the agent first.")
+            else:
+                with st.spinner("Agent running…"):
+                    try:
+                        answer, best_docs, all_docs = answer_question(
+                            question  = q,
+                            retriever = st.session_state.retriever,
+                            llm       = st.session_state.llm,
+                            history   = st.session_state.history_str,
+                        )
+                        # update history and messages
+                        st.session_state.history_str += f"\nUser: {q}\nAssistant: {answer}\n"
+                        st.session_state.messages.append({"role": "user", "content": q})
+                        st.session_state.messages.append({"role": "assistant", "content": answer, "chunks": best_docs})
+                        st.success("Agent completed — answer appended to chat.")
+                    except Exception as e:
+                        st.error(f"Agent error: {e}")
+
+    st.divider()
     st.markdown(
         "<small>Stack: LangChain · ChromaDB · CrossEncoder · Groq LLaMA-3</small>",
         unsafe_allow_html=True,
